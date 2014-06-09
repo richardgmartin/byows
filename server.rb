@@ -15,6 +15,22 @@ loop do                                             # Server runs forever
   end
   puts lines                                        # Output the full request to stdout
 
-  client.puts(Time.now.ctime)                       # Output the current time to the client
+# put HTML code in a Rub string and send to client/browser
+
+  response = "
+	<!DOCTYPE html>
+	<html>
+	  <head>
+	    <title>My first web server</title>
+	  </head>
+	  <body>
+	    <h1>My first web server</h1>
+	    <p>Oh hey, this is my first HTML response!</p>
+	    </body>
+	</html>"
+
+  client.puts(response)
+  # client.puts(Time.now.ctime)                       # Output the current time to the client
   client.close                                      # Disconnect from the client
 end
+
