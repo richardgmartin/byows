@@ -15,22 +15,25 @@ loop do                                             # Server runs forever
   end
   puts lines                                        # Output the full request to stdout
 
-# put HTML code in a Rub string and send to client/browser
+  filename = lines[0].gsub(/GET \//, '').gsub(/\ HTTP.*/, '')
 
-  response = "
-	<!DOCTYPE html>
-	<html>
-	  <head>
-	    <title>My first web server</title>
-	  </head>
-	  <body>
-	    <h1>My first web server</h1>
-	    <p>Oh hey, this is my first HTML response!</p>
-	    </body>
-	</html>"
+  if File.exists?(filename)
+  	client.puts "HTTP1.1 200 OK\r\n\r\n"
+    response = File.read(filename)
+  	
+  	# if filename =~/.css$/
+  	#   client.puts "Content-Type: text/css\r\n\r\n"
+  	# else
+  	#   client.puts "Content-Type: text/html\r\n\r\n"  
+  	# end
+  	
+  else
+    client.puts "HTTP/1.1 404 Not Found\r\n\r\n"
+    response = File.read("error.html")
+  
+  end	  	
 
   client.puts(response)
-  # client.puts(Time.now.ctime)                       # Output the current time to the client
   client.close                                      # Disconnect from the client
 end
 
